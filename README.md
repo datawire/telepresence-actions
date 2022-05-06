@@ -6,9 +6,9 @@ The V0 edition of the action offers:
 - Create a personal intercept of a remote server.
 - Set a header to only intercept the specific traffic.
 - Disconnect Telepresence from the remote cluster.
-- Only works with the ambassador ingress services, see.
-- Requires context propagation to  intercept the traffic, see.
-- Login using an API key, see.
+- Only works with the ambassador ingress services, [see]().
+- Requires context propagation to  intercept the traffic, [see](https://www.getambassador.io/docs/telepresence/latest/concepts/context-prop/).
+- Login using an API key, [see](https://www.getambassador.io/docs/telepresence/latest/reference/client/login/#acquiring-an-api-key).
 
 ## Usage
 ```yaml
