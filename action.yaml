@@ -21,14 +21,19 @@ inputs:
     description: Only intercept traffic that matches this "HTTP2_HEADER=REGEXP" specifier
     required: false
     default: "x-telepresence-intercept-id=service-intercepted"
+  version:
+    description: The version  of Telepresence to use
+    required: false
+    default: latest
 runs:
   using: "composite"
   steps:
+    - name: Checkout local
+      uses: actions/checkout@v3
     - name: Install Telepresence
-      shell: bash
-      run: |
-        sudo curl -fL https://app.getambassador.io/download/tel2/linux/amd64/latest/telepresence -o /usr/local/bin/telepresence
-        sudo chmod a+x /usr/local/bin/telepresence
+      uses: ./install/
+      with:
+        version: ${{ inputs.version }}
     - name: Create kubeconfig file
       shell: bash
       run: |
