@@ -2,7 +2,7 @@ name: 'Telepresence Intercept'
 description: 'Intercept a service'
 inputs:
   service_name:
-    description: The name of the ervice to intercept
+    description: The name of the service to intercept
     required: true
   service_port:
     description: The port to intercept
