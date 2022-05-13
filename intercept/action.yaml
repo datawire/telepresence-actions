@@ -1,0 +1,39 @@
+name: 'Telepresence Intercept'
+description: 'Intercept a service'
+inputs:
+  service_name:
+    description: The name of the ervice to intercept
+    required: true
+  service_port:
+    description: The port to intercept
+    required: true
+  namespace:
+    description: The namespace of the service to intercept
+    required: false
+    default: default
+  http_header:
+    description: Only intercept traffic that matches this "HTTP2_HEADER=REGEXP" specifier
+    required: false
+    default: "x-telepresence-intercept-id=service-intercepted"
+  env_file:
+    description: Emit the remote environment to an env file in Docker Compose format
+    required: false
+  ingress_host:
+    description: This value will be used as the ingress hostname
+    required: false
+    default: ambassador.ambassador
+  ingress_port:
+    description: This value will be used as the ingress port
+    required: false
+    default: '80'
+  ingress_tls:
+    description: This flag will determine if TLS is used, and will default to false.
+    required: false
+  ingress_l5:
+    description: This flag will default to the ingress-host value.
+    required: false
+    default: ambassador.ambassador
+runs:
+  using: 'node16'
+  main: 'intercept.js'
+  post: 'leave.js'
