@@ -1,0 +1,10 @@
+name: 'Telepresence Login'
+description: 'Uses an API KEY to login Telepresence'
+inputs:
+  telepresence_api_key:
+    description: 'API KEY'
+    required: true
+runs:
+  using: 'node16'
+  main: 'login.js'
+  post: 'logout.js'

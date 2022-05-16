@@ -1,0 +1,6 @@
+name: 'Telepresence Connect'
+description: 'Telepresence connects to a remote cluster'
+runs:
+  using: 'node16'
+  main: 'connect.js'
+  post: 'disconnect.js'
