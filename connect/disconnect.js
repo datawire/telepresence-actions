@@ -9,7 +9,7 @@ const telepresenceDisconnect = async function(){
     }
 
     try {
-        await exec.exec('telepresence', ['quit']);
+        await exec.exec('telepresence', ['quit', '-ur']);
     } catch (error) {
         core.setFailed(error.message);
     }
