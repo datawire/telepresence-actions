@@ -36,7 +36,6 @@ inputs:
   print_logs:
     description: This flag will determine if telepresence logs are printed out to the job's output and exported as an artifact.
     required: false
-    default: false
 runs:
   using: 'node16'
   main: 'intercept.js'
