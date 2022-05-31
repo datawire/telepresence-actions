@@ -11,5 +11,6 @@ runs:
     - name: Install Telepresence
       shell: bash
       run: |
+        export TELEPRESENCE_REPORT_GITHUB_ACTION_INTEGRATION=true
         sudo curl -fL https://app.getambassador.io/download/tel2/linux/amd64/${{inputs.version}}/telepresence -o /usr/local/bin/telepresence
         sudo chmod a+x /usr/local/bin/telepresence
