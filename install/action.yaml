@@ -1,15 +1,10 @@
-name: 'Install Telepresence'
-description: 'Install a specific version of Telepresence'
+name: 'Telepresence Install'
+description: 'Installs an specific version of telepresence'
 inputs:
   version:
-    description: Version of Telepresence to install. The latest version is selected as default.
+    description: Version of Telepresence to Install
     required: false
     default: latest
 runs:
-  using: "composite"
-  steps:
-    - name: Install Telepresence
-      shell: bash
-      run: |
-        sudo curl -fL https://app.getambassador.io/download/tel2/linux/amd64/${{inputs.version}}/telepresence -o /usr/local/bin/telepresence
-        sudo chmod a+x /usr/local/bin/telepresence
+  using: 'node16'
+  main: 'install.js'
