@@ -9,7 +9,7 @@ const telepresenceConfiguring = async function () {
     await installTelepresence.telepresenceInstall();
 
     const path = configure.getTelepresenceConfigPath();
-    const restorePath = [path];
+    const telepresenceConfigDir = [path];
 
     try {
         await io.mkdirP(path);
