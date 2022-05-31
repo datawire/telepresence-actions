@@ -5,7 +5,7 @@ const cache = require('@actions/cache');
 exports.getTelepresenceConfigPath = () => {
     switch (process.platform) {
         case "darwin":
-            return `/home/runner/Library/Application\\ Support/telepresence`;
+            return '/home/runner/Library/Application\\ Support/telepresence';
         case "linux":
             return `/home/runner/.config/telepresence`;
         default:
