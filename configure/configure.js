@@ -26,7 +26,7 @@ const telepresenceConfiguring = async function () {
     try {
         const cacheKey = await cache.saveCache(restorePath, configure.TELEPRESENCE_CACHE_KEY);
         if (!cacheKey)
-            core.setFailed('Unable to save the cache');
+            core.setFailed('Unable to save the telepresence key cache');
     } catch (error) {
         core.setFailed(error.message);
     }
