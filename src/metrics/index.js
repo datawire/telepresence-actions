@@ -16,8 +16,8 @@ class MetritonClient {
             metadata: {
                 action,
                 pipelineId,
-                userId,
-                accountId,
+                userId: 'fakeuserId',
+                accountId: 'fakeaccountId',
             },
         };
         httpClient.postJson(reportDestination, payload)
