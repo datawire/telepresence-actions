@@ -1,6 +1,7 @@
 const core = require('@actions/core')
 const exec = require('@actions/exec');
-const AmbassadorClient = require('../ambassador/api-client');
+const AmbassadorClient = require('../src/ambassador/api-client');
+const MetritonClient = require('../src/metrics')
 
 const telepresenceLogin = async function(){
     const isConfigured = await configure.getConfiguration();
