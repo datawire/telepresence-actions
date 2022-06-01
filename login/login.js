@@ -4,7 +4,9 @@ const AmbassadorClient = require('../ambassador/api-client');
 const configure = require("../src/configure");
 
 const telepresenceLogin = async function(){
-    await configure.getConfiguration();
+    const isConfigured = await configure.getConfiguration();
+    if(!isConfigured)
+        return;
     const apiKey = core.getInput('telepresence_api_key');
     if (!apiKey) {
         core.setFailed('telepresence_api_key is required');

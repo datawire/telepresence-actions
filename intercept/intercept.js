@@ -4,7 +4,9 @@ const exec = require('@actions/exec');
 const configure = require('../src/configure');
 
 const telepresenceIntercept = async function(){
-    await configure.getConfiguration();
+    const isConfigured = await configure.getConfiguration();
+    if(!isConfigured)
+        return;
     try {
         const service_name = core.getInput('service_name');
         const service_port = core.getInput('service_port');

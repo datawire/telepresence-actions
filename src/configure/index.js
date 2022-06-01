@@ -19,11 +19,16 @@ exports.getConfiguration = async () => {
     try {
         await io.mkdirP(path);
         const cacheid = await cache.restoreCache([path], this.TELEPRESENCE_CACHE_KEY,)
-        if (!cacheid)
+        if (!cacheid){
             core.setFailed('Unable to find a telepresence install id stored');
+            return false;
+        }
+
     } catch (error) {
         core.setFailed(error);
+        return false;
     }
+    return true;
 };
 
 exports.TELEPRESENCE_ID_STATE = 'telepresence-id-state';

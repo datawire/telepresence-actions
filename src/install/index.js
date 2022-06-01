@@ -7,6 +7,7 @@ const TP_INSTALL_CACHE_ID = 'telepresence-install-id';
 
 const windowsInstall = async (version) => {
     core.setFailed('Not implemented for use with Windows runners');
+    return false;
 };
 
 const unixInstall = async  (version) => {
@@ -21,14 +22,18 @@ const unixInstall = async  (version) => {
         try {
             await toolCache.downloadTool(TELEPRESENCE_DOWNLOAD_URL, `${this.TP_PATH}/telepresence`);
             tpCacheId = await cache.saveCache([this.TP_PATH], cacheKey);
-            if(!tpCacheId)
+            if(!tpCacheId) {
                 core.setFailed('There was a problem saving the telepresence binary.');
+                return false;
+            }
         } catch (e) {
             core.setFailed(`There was a problem getting the telepresence binary: ${e}`);
+            return false;
         }
     }
     core.addPath(this.TP_PATH);
     await exec.exec("chmod", ['a+x', `${this.TP_PATH}/telepresence`]);
+    return true;
 };
 
 exports.telepresenceInstall = async () => {
@@ -36,14 +41,13 @@ exports.telepresenceInstall = async () => {
         const version = core.getInput('version');
         switch (process.platform) {
             case "win32":
-                await windowsInstall(version);
-                break;
+                return await windowsInstall(version);
             case "linux":
             case "darwin":
-                await unixInstall(version);
-                break;
+                return await unixInstall(version);
             default:
                 core.setFailed("Invalid runner platform");
+                return false;
         }
     } catch (error) {
         core.setFailed(error.message);
