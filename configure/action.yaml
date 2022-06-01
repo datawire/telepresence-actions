@@ -4,7 +4,7 @@ inputs:
   version:
     description: The version of telepresence to use
     required: false
-    default: 2.5.8
+    default: latest
 runs:
   using: 'node16'
   main: 'configure.js'
