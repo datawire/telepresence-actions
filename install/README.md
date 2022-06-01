@@ -1,6 +1,6 @@
 # Telepresence install action
 
-The Telepresence install action installs the Telepresence binary in the Github runner at a specific version (optional) so the binary is available for other steps of the workflow.
+The Telepresence install action installs the Telepresence binary in the Github runner at a specific version (optional) so it is available for other steps of the workflow.
 
 **Note**: It only supports Unix systems for now.
 
