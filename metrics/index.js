@@ -19,7 +19,7 @@ class MetritonClient {
             action,
             },
         };
-        httpClient.post(this.reportDestination, payload)
+        this.httpClient.post(this.reportDestination, payload)
     }
 }
 
