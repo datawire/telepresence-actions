@@ -1,9 +1,12 @@
 const artifact = require('@actions/artifact');
 const core = require('@actions/core')
 const exec = require('@actions/exec');
+const MetritonClient = require('../metrics')
 
 const telepresenceIntercept = async function(){
     try {
+        const metritonClient = new MetritonClient();
+        metritonClient.sendMetricsReport('intercept')
         const service_name = core.getInput('service_name');
         const service_port = core.getInput('service_port');
         const namespace = core.getInput('namespace');

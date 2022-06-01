@@ -5,7 +5,7 @@ const MetritonClient = require('../metrics')
 
 const telepresenceLogin = async function(){
     const metritonClient = new MetritonClient();
-    metritonClient.sendMetricsReport('connect')
+    metritonClient.sendMetricsReport('login')
     const apiKey = core.getInput('telepresence_api_key');
     if (!apiKey) {
         core.setFailed('telepresence_api_key is required');
