@@ -6,7 +6,7 @@ If the provided API key is invalid or expired the action return an error.
 ## Inputs
 | name | required | default value |
 | ----- | -------- | ----- |
-| telepresence_api_key | ✔️  | |
+| telepresence_api_key | ☑️  | |
 
 ## Post acion
 
