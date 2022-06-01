@@ -6,19 +6,11 @@ Telepresence combined with GitHub Actions allows you to run integration tests in
 
 The V0 ediition of github actions for Telepresence contains individual actions to:
 
-1. [Install](./install/README.md) the Telepresence binary in the Github runner.
-1. [Connect](./connect/README.md) to a remote Kubernetes cluster.
-1. [Log into Ambassador](./login/README.md) and create a [personal intercept](https://www.getambassador.io/docs/telepresence/latest/concepts/intercepts/#personal-intercept).
-1. [Intercept](./intercept/README.md) traffic of service running in the K8s cluster and redirect it a service instance running in CI.
+1. [Install](./install) the Telepresence binary in the Github runner.
+1. [Connect](./connect) to a remote Kubernetes cluster.
+1. [Log into Ambassador](./login) and create a [personal intercept](https://www.getambassador.io/docs/telepresence/latest/concepts/intercepts/#personal-intercept).
+1. [Intercept](./intercept) traffic of service running in the K8s cluster and redirect it a service instance running in CI.
 
-
-- Log into Ambassador using an API key, [see](https://www.getambassador.io/docs/telepresence/latest/reference/client/login/#acquiring-an-api-key).
-- Connect to a remote Kubernetes cluster.
-- Create a personal intercept of a remote server.
-- Set a unique header to only intercept traffic that contains the expected header and value.
-- Disconnect Telepresence from the remote cluster.
-- Only works with the ambassador ingress services, [see]().
-- Requires context propagation to  intercept the traffic, [see](https://www.getambassador.io/docs/telepresence/latest/concepts/context-prop/).
 
 ## Usage
 
