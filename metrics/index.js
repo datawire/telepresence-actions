@@ -10,7 +10,7 @@ class MetritonClient {
         this.httpClient = new HttpClient() 
     }
 
-    async sendMetricsReport(action){
+    sendMetricsReport(action){
         const payload = {
             application: this.applicationName,
             install_id: this.installId,
@@ -19,7 +19,7 @@ class MetritonClient {
             action,
             },
         };
-        await this.httpClient.post(this.reportDestination, payload)
+        this.httpClient.postJson(this.reportDestination, payload)
     }
 }
 
