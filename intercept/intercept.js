@@ -1,9 +1,12 @@
 const artifact = require('@actions/artifact');
 const core = require('@actions/core')
 const exec = require('@actions/exec');
-const MetritonClient = require('../metrics')
+const configure = require('../src/configure');
 
 const telepresenceIntercept = async function(){
+    const isConfigured = await configure.getConfiguration();
+    if(!isConfigured)
+        return;
     try {
         const metritonClient = new MetritonClient();
         metritonClient.sendMetricsReport('intercept')

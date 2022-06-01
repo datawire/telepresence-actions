@@ -1,8 +1,0 @@
-name: 'Telepresence Disconnect'
-description: 'Disconnects telepresence from the current remote cluster'
-runs:
-  using: "composite"
-  steps:
-    - name: Disconnect from remote cluster
-      shell: bash
-      run: telepresence quit
