@@ -1,7 +1,10 @@
 const core = require('@actions/core')
 const exec = require('@actions/exec');
+const MetritonClient = require('../metrics')
 
 const telepresenceDisconnect = async function(){
+    const metritonClient = new MetritonClient();
+    metritonClient.sendMetricsReport('connect')
     const connected = core.getState('telepresence_connected');
     if (!connected) {
         core.notice("Skipping disconnect. Telepresence was unable to connect.");

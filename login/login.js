@@ -1,8 +1,11 @@
 const core = require('@actions/core')
 const exec = require('@actions/exec');
 const AmbassadorClient = require('../ambassador/api-client');
+const MetritonClient = require('../metrics')
 
 const telepresenceLogin = async function(){
+    const metritonClient = new MetritonClient();
+    metritonClient.sendMetricsReport('connect')
     const apiKey = core.getInput('telepresence_api_key');
     if (!apiKey) {
         core.setFailed('telepresence_api_key is required');

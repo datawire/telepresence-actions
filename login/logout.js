@@ -1,7 +1,10 @@
 const core = require('@actions/core')
 const exec = require('@actions/exec');
+const MetritonClient = require('../metrics')
 
 const telepresenceLogout = async function(){
+    const metritonClient = new MetritonClient();
+    metritonClient.sendMetricsReport('connect')
     const sessionCreated = core.getState('telepresence_session_created');
     if (!sessionCreated) {
         core.notice("Skipping logout. No telepresence session.");
