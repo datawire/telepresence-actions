@@ -1,12 +1,12 @@
 const fs = require('fs/promises');
 const HttpClient = require("@actions/http-client").HttpClient
 const core = require('@actions/core');
-const installTelepresence = require('../install');
+const configureTP = require('../configure');
 
 const httpClient = new HttpClient()
 const reportDestination = 'https://metriton.datawire.io/beta/scout'
 const applicationName = 'telepresence-github-action-integration'
-const installId = fs.readFileSync(`${installTelepresence.getTelepresenceConfigPath()}/id`).toString()
+const installId = fs.readFileSync(`${configureTP.getTelepresenceConfigPath()}/id`).toString()
 const extensionVersion = '0.0.0-local'
 const pipelineId = process.env.GITHUB_RUN_ID
 
