@@ -1,4 +1,4 @@
-const fs = require('fs/promises');
+const fs = require('fs');
 const HttpClient = require("@actions/http-client").HttpClient
 const core = require('@actions/core');
 const configureTP = require('../configure');
