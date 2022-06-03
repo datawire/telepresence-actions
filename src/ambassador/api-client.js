@@ -36,7 +36,6 @@ class AmbassadorClient {
         core.info(`${method.toLowerCase()}Json`)
         return this.httpClient[`${method.toLowerCase()}Json`](
             this.baseURL + endpoint, 
-            data,
             additionalHeaders || {}
         );
     }
