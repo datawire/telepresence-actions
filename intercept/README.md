@@ -27,7 +27,7 @@ The telepresence intercept action includes a post action script that internally 
 
 ```yaml
 - name: Intercept remote service
-  uses: datawire/telepresence-actions/intercept@v0.3
+  uses: datawire/telepresence-actions/intercept@v1.0
   with:
     service_name: voting
     service_port: 8080

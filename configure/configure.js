@@ -6,8 +6,8 @@ const installTelepresence = require('../src/install');
 const cache = require('@actions/cache');
 
 const telepresenceConfiguring = async function () {
-    const isInstalled = await installTelepresence.telepresenceInstall();
-    if(!isInstalled)
+    const telepresenceCacheKey = await installTelepresence.telepresenceInstall();
+    if(!telepresenceCacheKey)
         return;
 
     const path = configure.getTelepresenceConfigPath();
@@ -15,18 +15,25 @@ const telepresenceConfiguring = async function () {
 
     try {
         await io.mkdirP(path);
-        await cache.restoreCache(telepresenceConfigDir, configure.TELEPRESENCE_CACHE_KEY);
+        await cache.restoreCache(telepresenceConfigDir, telepresenceCacheKey);
     } catch (error) {
         core.warning(`Unable to find the telepresence id: ${error}`);
     }
+    // Create telepresence configuration file if provided
     try {
-        await exec.exec(`${installTelepresence.TP_PATH}/telepresence`, ['connect']);
+        await configure.createClientConfigFile();
+    } catch(err) {
+        core.setFailed(err);
+        return;
+    }
+    try {
+        await exec.exec('telepresence', ['connect']);
     } catch (error) {
         core.setFailed(error.message);
         return;
     }
     try {
-        const cacheKey = await cache.saveCache(telepresenceConfigDir, configure.TELEPRESENCE_CACHE_KEY);
+        const cacheKey = await cache.saveCache(telepresenceConfigDir, telepresenceCacheKey);
         if (!cacheKey)
             core.setFailed('Unable to save the telepresence key cache');
     } catch (error) {

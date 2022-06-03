@@ -2,14 +2,17 @@
 
 Telepresence combined with GitHub Actions allows you to run integration tests in your CI pipeline without having to run any dependant service. By connecting to the target Kubernetes cluster, intercepting traffic to the remote service and sending it to an instance of the service running in CI you will be able to test bugfixes, updates and features very easily.
 
-## V0
+## V1.0
 
-The V0 ediition of github actions for Telepresence contains individual actions to:
+The V1.0 of github actions for Telepresence contains individual actions to:
 
+1. [Configure](./configure) Telepresence in a new repository.
 1. [Install](./install) the Telepresence binary in the Github runner.
 1. [Connect](./connect) to a remote Kubernetes cluster.
 1. [Log into Ambassador](./login) and create a [personal intercept](https://www.getambassador.io/docs/telepresence/latest/concepts/intercepts/#personal-intercept).
 1. [Intercept](./intercept) traffic of service running in the K8s cluster and redirect it a service instance running in CI.
+
+See the [Telepresence GitHub actions documentation page](https://www.getambassador.io/docs/telepresence/latest/ci/github-actions/) for information about how to use these actions and build an integration tests workflow for your repository.
 
 
 ## Usage
