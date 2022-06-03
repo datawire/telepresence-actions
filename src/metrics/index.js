@@ -1,4 +1,4 @@
-// const fs = require('fs');
+const fs = require('fs');
 const HttpClient = require("@actions/http-client").HttpClient
 const AmbassadorClient = require('../ambassador/api-client');
 const core = require('@actions/core');
