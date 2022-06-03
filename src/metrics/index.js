@@ -15,9 +15,7 @@ class MetritonClient {
             core.info('install id: ' + installId)
             const extensionVersion = '0.0.0-local'
             const pipelineId = process.env.GITHUB_RUN_ID
-            core.info('pipelineId id: ' + installId)
-            const { id: user_id, accountId: acount_id } = (await ambassadorClient.doRequestJson('/userinfo', null, 'GET')).result
-            core.info('accountInfo: ' + userInfo)
+            const { id: user_id, accountId: account_id } = (await ambassadorClient.doRequestJson('/userinfo', null, 'GET')).result
             const payload = {
                 application: applicationName,
                 install_id: installId,
