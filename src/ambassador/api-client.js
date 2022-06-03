@@ -33,7 +33,8 @@ class AmbassadorClient {
 
     async doRequestJson(endpoint, data, method = 'GET', additionalHeaders) {
         core.info('inside doRequestJson')
-        return this.httpClient[`${method.toLocaleLowerCase()}Json`](
+        core.info(`${method.toLowerCase()}Json`)
+        return this.httpClient[`${method.toLowerCase()}Json`](
             this.baseURL + endpoint, 
             data,
             additionalHeaders || {}
