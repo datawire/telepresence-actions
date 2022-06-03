@@ -18,7 +18,7 @@ The telepresence login action includes a post action script that logs the user o
 
 ```yaml
   - name: Login
-    uses: datawire/telepresence-actions/login@v0.3
+    uses: datawire/telepresence-actions/login@v1.0
     with:
       telepresence_api_key: ${{ secrets.TELEPRESENCE_API_KEY }}
 ```
