@@ -4,13 +4,15 @@ Telepresence combined with GitHub Actions allows you to run integration tests in
 
 ## V0
 
-The V0 ediition of github actions for Telepresence contains individual actions to:
+The V0 edition of github actions for Telepresence contains individual actions to:
 
-1. [Configure](./configure) Telepresence in a new repository. See the action docs to know how to use it.
+1. [Configure](./configure) Telepresence in a new repository.
 1. [Install](./install) the Telepresence binary in the Github runner.
 1. [Connect](./connect) to a remote Kubernetes cluster.
 1. [Log into Ambassador](./login) and create a [personal intercept](https://www.getambassador.io/docs/telepresence/latest/concepts/intercepts/#personal-intercept).
 1. [Intercept](./intercept) traffic of service running in the K8s cluster and redirect it a service instance running in CI.
+
+See the [Telepresence GitHub actions documentation page](https://www.getambassador.io/docs/telepresence/latest/ci/github-actions/) for information about how to use these actions and build an integration tests workflow for your repository.
 
 
 ## Usage
