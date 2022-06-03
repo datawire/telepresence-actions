@@ -37,7 +37,7 @@ jobs:
 
       # Connect to a remote Kubernetes cluster
       - name: Connect to remote cluster
-        uses: datawire/telepresence-actions/connect@v0.3
+        uses: datawire/telepresence-actions/connect@v1.0
 
       # Other steps ...
 ```
