@@ -32,10 +32,15 @@ class AmbassadorClient {
     }
 
     async doRequestJson(endpoint, data, method = 'GET', additionalHeaders) {
-        core.info('inside doRequestJson')
-        core.info(`${method.toLowerCase()}Json`)
+        if (method === 'GET') {
+            return this.httpClient.getJson(
+                this.baseURL + endpoint, 
+                additionalHeaders || {}
+            );
+        }
         return this.httpClient[`${method.toLowerCase()}Json`](
-            this.baseURL + endpoint, 
+            this.baseURL + endpoint,
+            data,
             additionalHeaders || {}
         );
     }
