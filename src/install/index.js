@@ -1,6 +1,7 @@
 const core = require('@actions/core');
 const toolCache = require('@actions/tool-cache');
 const cache = require('@actions/cache');
+const configure = require('../configure');
 const exec = require('@actions/exec');
 
 const TP_INSTALL_CACHE_ID = 'telepresence-install-id';
@@ -37,20 +38,29 @@ const unixInstall = async  (version) => {
 };
 
 exports.telepresenceInstall = async () => {
+    const version = core.getInput('version');
+    let configFileSha = '00000';
     try {
-        const version = core.getInput('version');
+        configFileSha = await configure.checksumConfigFile('sha1');
+    } catch (err) {
+        core.info('No telepresence configuration file found.');
+    }
+    const telepresenceCacheKey = `TELEPRESENCE-${version}-${configFileSha}`;
+    core.exportVariable('TELEPRESENCE_CACHE_KEY', telepresenceCacheKey);
+    try {
         switch (process.platform) {
             case "win32":
-                return await windowsInstall(version);
+                return await windowsInstall(version) && telepresenceCacheKey;
             case "linux":
             case "darwin":
-                return await unixInstall(version);
+                return await unixInstall(version) && telepresenceCacheKey;
             default:
                 core.setFailed("Invalid runner platform");
-                return false;
+                return undefined;
         }
     } catch (error) {
         core.setFailed(error.message);
+        return undefined;
     }
 };
 
