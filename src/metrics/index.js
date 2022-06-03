@@ -1,6 +1,7 @@
 // const fs = require('fs');
 const HttpClient = require("@actions/http-client").HttpClient
 const AmbassadorClient = require('../ambassador/api-client');
+const core = require('@actions/core');
 
 const httpClient = new HttpClient();
 const ambassadorClient = new AmbassadorClient(process.env.TELEPRESENCE_API_KEY)
