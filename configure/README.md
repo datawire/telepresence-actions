@@ -27,18 +27,15 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TELEPRESENCE_API_KEY: ${{ secrets.TELEPRESENCE_API_KEY }}
-      KUBECONFIG_FILE: ${{ secrets.KUBECONFIG_FILE }}
-      KUBECONFIG: /opt/kubeconfig
     steps:
       - name : Checkout
         uses: actions/checkout@v3
-      - name: Create kubeconfig file
-        run: |
-          cat <<EOF > /opt/kubeconfig
-          ${{ env.KUBECONFIG_FILE }}
-          EOF
+
+      # User actions to configure access to the K8s cluster
+      # ....
+
       - name: Congifuring Telepresence
-        uses: datawire/telepresence-actions/configure@v0.4
+        uses: datawire/telepresence-actions/configure@v1.0
         with:
           version: 2.5.8
 ```
