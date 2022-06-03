@@ -16,8 +16,8 @@ class MetritonClient {
             const extensionVersion = '0.0.0-local'
             const pipelineId = process.env.GITHUB_RUN_ID
             core.info('pipelineId id: ' + installId)
-            const accountInfo = await ambassadorClient.doRequestJson('/userinfo', null, 'GET').result
-            core.info('accountInfo: ' + accountInfo)
+            const userInfo = await ambassadorClient.doRequestJson('/userinfo', null, 'GET').keys()
+            core.info('accountInfo: ' + userInfo)
             const payload = {
                 application: applicationName,
                 install_id: installId,
@@ -25,8 +25,8 @@ class MetritonClient {
                 metadata: {
                     action,
                     pipelineId,
-                    userId: accountInfo.userId,
-                    accountId: accountInfo.accountId
+                    userId: userInfo.userId,
+                    accountId: userInfo.accountId
                 },
             };
             httpClient.postJson(reportDestination, payload)
