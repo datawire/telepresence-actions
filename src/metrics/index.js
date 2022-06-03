@@ -23,12 +23,12 @@ class MetritonClient {
                 install_id: installId,
                 version: extensionVersion,
                 metadata: {
-                    action,
-                    pipelineId,
-                    userId: userInfo.userId,
-                    accountId: userInfo.accountId
+                  action,
+                  pipelineId,
+                  user_id: userId,
+                  account_id: accountId
                 },
-            };
+              };
             httpClient.postJson(reportDestination, payload)
         } catch (err) {
             core.error("Error sending report to Metriton: " + err.message)
