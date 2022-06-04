@@ -40,6 +40,8 @@ const unixInstall = async  (version) => {
 exports.telepresenceInstall = async () => {
     const version = core.getInput('version');
     let configFileSha = '00000';
+    await exec.exec('echo "TELEPRESENCE_GITHUB_ACTION_INTEGRATION=true" >> $GITHUB_ENV');
+    core.info(process.env["TELEPRESENCE_GITHUB_ACTION_INTEGRATION"])
     try {
         configFileSha = await configure.checksumConfigFile('sha1');
     } catch (err) {
@@ -47,6 +49,7 @@ exports.telepresenceInstall = async () => {
     }
     const telepresenceCacheKey = `TELEPRESENCE-${version}-${configFileSha}`;
     core.exportVariable('TELEPRESENCE_CACHE_KEY', telepresenceCacheKey);
+
     try {
         switch (process.platform) {
             case "win32":
