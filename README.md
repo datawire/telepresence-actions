@@ -13,7 +13,7 @@ The V1.0 of github actions for Telepresence contains individual actions to:
 1. [Intercept](./intercept) traffic of service running in the K8s cluster and redirect it a service instance running in CI.
 
 See the [Telepresence GitHub actions documentation page](https://www.getambassador.io/docs/telepresence/latest/ci/github-actions/) for information about how to use these actions and build an integration tests workflow for your repository.
-
+**Note**: The version v1.0 only supports Ubuntu runners at moment.
 
 ## Usage
 
