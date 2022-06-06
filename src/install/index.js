@@ -47,6 +47,7 @@ exports.telepresenceInstall = async () => {
     }
     const telepresenceCacheKey = `TELEPRESENCE-${version}-${configFileSha}`;
     core.exportVariable('TELEPRESENCE_CACHE_KEY', telepresenceCacheKey);
+
     try {
         switch (process.platform) {
             case "win32":

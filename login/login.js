@@ -1,7 +1,9 @@
 const core = require('@actions/core')
 const exec = require('@actions/exec');
-const AmbassadorClient = require('../ambassador/api-client');
 const configure = require("../src/configure");
+
+const AmbassadorClient = require('../src/ambassador/api-client');
+const MetritonClient = require('../src/metrics')
 
 const telepresenceLogin = async function(){
     const isConfigured = await configure.getConfiguration();
@@ -21,6 +23,7 @@ const telepresenceLogin = async function(){
     }
 
     try {
+        MetritonClient.sendMetricsReport('login')
         await exec.exec('telepresence', ['login', '--apikey', apiKey]);
         core.saveState('telepresence_session_created', true);
     } catch (error) {
