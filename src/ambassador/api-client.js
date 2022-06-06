@@ -21,6 +21,14 @@ class AmbassadorClient {
         return true;
     }
 
+    async getUserInfo() {
+        const response = await ambassadorClient.doRequestJson('/userinfo', null, 'GET')
+        if (userInfoResponse.statusCode !== 200) {
+            throw new Error('Could not get user information')
+        }
+        return response
+    }
+
     async doRequest(endpoint, data, method, additionalHeaders) {
         return this.httpClient.request(
             method || 'GET',
