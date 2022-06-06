@@ -15,8 +15,8 @@ class MetritonClient {
             const installId = fs.readFileSync(`${configure.getTelepresenceConfigPath()}/id`).toString()
             const extensionVersion = process.env.ACTION_VERSION	
             const pipelineId = `${process.env.GITHUB_RUN_ID}-${process.env.GITHUB_RUN_ATTEMPT}`
-            const userInfoResponse = (await ambassadorClient.doRequestJson('/userinfo', null, 'GET'))
-            if (userInfoResponse.status !== 200) {
+            const userInfoResponse = await ambassadorClient.doRequestJson('/userinfo', null, 'GET')
+            if (userInfoResponse.statusCode !== 200) {
                 throw new Error('Could not get user information')
             }
             const { id: user_id, accountId: account_id } = userInfoResponse.result
