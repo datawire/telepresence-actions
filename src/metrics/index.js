@@ -14,7 +14,7 @@ class MetritonClient {
             const applicationName = 'telepresence-github-action-integration'
             const installId = fs.readFileSync(`${configure.getTelepresenceConfigPath()}/id`).toString()
             const extensionVersion = '0.0.0.0'
-            const pipelineId = process.env.GITHUB_RUN_ID
+            const pipelineId = `${process.env.GITHUB_RUN_ID}-${process.env.GITHUB_RUN_ATTEMPT}`
             const { id: user_id, accountId: account_id } = (await ambassadorClient.doRequestJson('/userinfo', null, 'GET')).result
             const payload = {
                 application: applicationName,
