@@ -41,7 +41,6 @@ exports.telepresenceInstall = async () => {
     const version = core.getInput('version');
     let configFileSha = '00000';
     await exec.exec('echo', ['"TELEPRESENCE_GITHUB_ACTION_INTEGRATION=true"', '>> $GITHUB_ENV']);
-    core.info('TELEPRESENCE_GITHUB_ACTION_INTEGRATION' + process.env["TELEPRESENCE_GITHUB_ACTION_INTEGRATION"])
     try {
         configFileSha = await configure.checksumConfigFile('sha1');
     } catch (err) {

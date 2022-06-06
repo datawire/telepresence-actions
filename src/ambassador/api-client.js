@@ -1,5 +1,4 @@
 const HttpClient = require("@actions/http-client").HttpClient
-const core = require('@actions/core');
 
 class AmbassadorClient {
     constructor(apiKey) {
@@ -32,7 +31,6 @@ class AmbassadorClient {
     }
 
     async doRequestJson(endpoint, data, method = 'GET', additionalHeaders) {
-        core.info(this.baseURL + endpoint)
         if (method === 'GET') {
             return this.httpClient.getJson(
                 this.baseURL + endpoint, 
