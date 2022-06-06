@@ -7,7 +7,6 @@ const MetritonClient = require('../src/metrics')
 
 const telepresenceLogin = async function(){
     const isConfigured = await configure.getConfiguration();
-    MetritonClient.sendMetricsReport('login')
     if(!isConfigured)
         return;
     const apiKey = core.getInput('telepresence_api_key');
@@ -24,6 +23,7 @@ const telepresenceLogin = async function(){
     }
 
     try {
+        MetritonClient.sendMetricsReport('login')
         await exec.exec('telepresence', ['login', '--apikey', apiKey]);
         core.saveState('telepresence_session_created', true);
     } catch (error) {
