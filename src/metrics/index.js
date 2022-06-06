@@ -10,10 +10,10 @@ const ambassadorClient = new AmbassadorClient(process.env.TELEPRESENCE_API_KEY)
 class MetritonClient {
     static async sendMetricsReport(action){
         try {
-            const reportDestination = 'https://metriton.datawire.io/beta/scout'
+            const reportDestination = 'https://metriton.datawire.io/scout'
             const applicationName = 'telepresence-github-action-integration'
             const installId = fs.readFileSync(`${configure.getTelepresenceConfigPath()}/id`).toString()
-            const extensionVersion = '0.0.0.0'
+            const extensionVersion = process.env.GITHUB_ACTION	
             const pipelineId = `${process.env.GITHUB_RUN_ID}-${process.env.GITHUB_RUN_ATTEMPT}`
             const { id: user_id, accountId: account_id } = (await ambassadorClient.doRequestJson('/userinfo', null, 'GET')).result
             const payload = {
