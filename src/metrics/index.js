@@ -13,7 +13,7 @@ class MetritonClient {
             const reportDestination = 'https://metriton.datawire.io/scout'
             const applicationName = 'telepresence-github-action-integration'
             const installId = fs.readFileSync(`${configure.getTelepresenceConfigPath()}/id`).toString()
-            const extensionVersion = process.env.GITHUB_ACTION	
+            const extensionVersion = process.env.ACTION_VERSION	
             const pipelineId = `${process.env.GITHUB_RUN_ID}-${process.env.GITHUB_RUN_ATTEMPT}`
             const { id: user_id, accountId: account_id } = (await ambassadorClient.doRequestJson('/userinfo', null, 'GET')).result
             const payload = {
