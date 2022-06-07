@@ -5,10 +5,6 @@ inputs:
     description: Version of Telepresence to Install
     required: false
     default: latest
-  actionVersion:
-    description: Placeholder input that holds the Telepresence github actions version. Do not use.
-    required: false
-    default: ${{ github.action_ref }}
 runs:
   using: 'node16'
   pre: 'pre-install.js'
