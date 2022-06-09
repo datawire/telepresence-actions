@@ -1,5 +1,5 @@
 name: 'Ambassador Telepresence Actions'
-description: 'Telepresence combined with GitHub Actions allows you to run integration tests in your CI pipeline without having to run any dependant service. By connecting to the target Kubernetes cluster, intercepting traffic to the remote service and sending it to an instance of the service running in CI you will be able to test bugfixes, updates and features very easily.'
+description: 'Telepresence combined with GitHub Actions allows you to run integration tests in your CI pipeline.'
 branding:
   color: purple
 inputs:
