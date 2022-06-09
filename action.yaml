@@ -1,0 +1,19 @@
+name: 'Telepresence Intercept'
+description: 'Set the configuration to use telepresence in the repository'
+inputs:
+  version:
+    description: The version of telepresence to use
+    required: false
+    default: latest
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        repository: datawire/telepresence-actions
+        path: './telepresence-actions'
+    - name: Configure Telepresence
+      uses: ./telepresence-actions/configuring/
+      with:
+        version: ${{inputs.version}}
