@@ -4,7 +4,7 @@ Telepresence combined with GitHub Actions allows you to run integration tests in
 
 ## v1.0.0
 
-The v1.0.0 of GitHub actions for Telepresence contains individual actions to:
+The v1.0.0 of Telepresence GitHub Actions contains individual actions to:
 
 1. [Configure](./configure) Telepresence in a new repository.
 1. [Install](./install) the Telepresence binary in the Github runner.
@@ -17,7 +17,7 @@ See the [Telepresence GitHub actions documentation page](https://www.getambassad
 
 ## Usage
 ### Prerequisites
-Get an ambassador free account. Register [here](https://app.getambassador.io/auth/realms/production/protocol/openid-connect/auth?client_id=telepresence-github-actions&response_type=code&code_challenge=qhXI67CwarbmH-pqjDIV1ZE6kqggBKvGfs69cxst43w&code_challenge_method=S256&redirect_uri=https://app.getambassador.io) to get a free account. No credit card required.
+Get a free Ambassador Cloud account. Register [here](https://app.getambassador.io/auth/realms/production/protocol/openid-connect/auth?client_id=telepresence-github-actions&response_type=code&code_challenge=qhXI67CwarbmH-pqjDIV1ZE6kqggBKvGfs69cxst43w&code_challenge_method=S256&redirect_uri=https://app.getambassador.io) to get a free account. No credit card required.
 
 ### Steps
 The following is an example of a workflow that:
