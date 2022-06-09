@@ -1,5 +1,5 @@
 name: 'Ambassador Telepresence Actions'
-description: 'Telepresence combined with GitHub Actions allows you to run integration tests in your CI pipeline.'
+description: 'Telepresence GitHub Actions allows you to run integration tests against services in a remote target cluster'
 branding:
   color: purple
 inputs:
