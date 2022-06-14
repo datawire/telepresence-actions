@@ -39,5 +39,5 @@ inputs:
     default: false
 runs:
   using: 'node16'
-  main: 'intercept.js'
-  post: 'leave.js'
+  main: 'dist/intercept/index.js'
+  post: 'dist/leave/index.js'
