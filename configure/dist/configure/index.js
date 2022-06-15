@@ -1123,6 +1123,8 @@ function createTar(archiveFolder, sourceDirectories, compressionMethod) {
             ...getCompressionProgram(),
             '-cf',
             cacheFileName.replace(new RegExp(`\\${path.sep}`, 'g'), '/'),
+            '--exclude',
+            cacheFileName.replace(new RegExp(`\\${path.sep}`, 'g'), '/'),
             '-P',
             '-C',
             workingDirectory.replace(new RegExp(`\\${path.sep}`, 'g'), '/'),
@@ -60932,90 +60934,88 @@ const cache = __nccwpck_require__(1602);
 const fs = __nccwpck_require__(7147);
 
 exports.fileExists = async function (filePath) {
-    try {
-        const stats = await fs.promises.stat(filePath);
-        if (!stats.isFile()) {
-            throw new Error('client_values_file must be a file.');
-        }
-        return true;
-    } catch (err) {
-        if (err.code === 'ENOENT') {
-            return false;
-        }
-        throw err;
+  try {
+    const stats = await fs.promises.stat(filePath);
+    if (!stats.isFile()) {
+      throw new Error('client_values_file must be a file.');
     }
+    return true;
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      return false;
+    }
+    throw err;
+  }
 };
 
 exports.getTelepresenceConfigPath = () => {
-    switch (process.platform) {
-        case "darwin":
-            return '/home/runner/Library/Application\\ Support/telepresence';
-        case "linux":
-            return '/home/runner/.config/telepresence';
-        default:
-            core.setFailed(`The platform ${process.platform} is not supported yet`);
-            return null;
-    }
+  switch (process.platform) {
+    case 'darwin':
+      return '/home/runner/Library/Application\\ Support/telepresence';
+    case 'linux':
+      return '/home/runner/.config/telepresence';
+    default:
+      core.setFailed(`The platform ${process.platform} is not supported yet`);
+      return null;
+  }
 };
 
 exports.getConfiguration = async () => {
-    const telepresenceCacheKey = process.env.TELEPRESENCE_CACHE_KEY;
-    if (!telepresenceCacheKey)
-        return false;
-    const path = this.getTelepresenceConfigPath();
-    try {
-        await io.mkdirP(path);
-        const cacheid = await cache.restoreCache([path], telepresenceCacheKey);
-        if (!cacheid) {
-            core.setFailed('Unable to find a telepresence install id stored');
-            return false;
-        }
-    } catch (error) {
-        core.setFailed(error);
-        return false;
+  const telepresenceCacheKey = process.env.TELEPRESENCE_CACHE_KEY;
+  if (!telepresenceCacheKey) return false;
+  const path = this.getTelepresenceConfigPath();
+  try {
+    await io.mkdirP(path);
+    const cacheid = await cache.restoreCache([path], telepresenceCacheKey);
+    if (!cacheid) {
+      core.setFailed('Unable to find a telepresence install id stored');
+      return false;
     }
-    return true;
+  } catch (error) {
+    core.setFailed(error);
+    return false;
+  }
+  return true;
 };
 
 /**
  * Copies the given client configuration file to the user's Telepresence configuration directory
  */
 exports.createClientConfigFile = async function () {
-    let fileExists = false;
-    try {
-        fileExists = await this.fileExists(this.TELEPRESENCE_CONFIG_FILE_PATH);
-    } catch (err) {
-        core.warning('Error accessing telepresence config file. ' + err);
-        return;
-    }
-    if (!fileExists) {
-        return;
-    }
+  let fileExists = false;
+  try {
+    fileExists = await this.fileExists(this.TELEPRESENCE_CONFIG_FILE_PATH);
+  } catch (err) {
+    core.warning('Error accessing telepresence config file. ' + err);
+    return;
+  }
+  if (!fileExists) {
+    return;
+  }
 
-    const telepresenceConfigDir = this.getTelepresenceConfigPath();
-    await exec.exec('cp', [this.TELEPRESENCE_CONFIG_FILE_PATH, telepresenceConfigDir + '/config.yml']);
-}
+  const telepresenceConfigDir = this.getTelepresenceConfigPath();
+  await exec.exec('cp', [this.TELEPRESENCE_CONFIG_FILE_PATH, telepresenceConfigDir + '/config.yml']);
+};
 
 exports.checksumConfigFile = function (algorithm) {
-    const filePath = process.env.GITHUB_WORKSPACE + this.TELEPRESENCE_CONFIG_FILE_PATH;
-    return new Promise(function (resolve, reject) {
-        let crypto = __nccwpck_require__(6113);
+  const filePath = process.env.GITHUB_WORKSPACE + this.TELEPRESENCE_CONFIG_FILE_PATH;
+  return new Promise(function (resolve, reject) {
+    let crypto = __nccwpck_require__(6113);
 
-        let hash = crypto.createHash(algorithm).setEncoding('hex');
-        fs.createReadStream(filePath)
-            .once('error', reject)
-            .pipe(hash)
-            .once('finish', function () {
-                resolve(hash.read());
-            });
-    });
-}
+    let hash = crypto.createHash(algorithm).setEncoding('hex');
+    fs.createReadStream(filePath)
+      .once('error', reject)
+      .pipe(hash)
+      .once('finish', function () {
+        resolve(hash.read());
+      });
+  });
+};
 
 exports.TELEPRESENCE_ID_STATE = 'telepresence-id-state';
 exports.TELEPRESENCE_ID_SAVES = 'telepresence-saves';
 exports.TELEPRESENCE_ID_SAVED = 'telepresence-saved';
-exports.TELEPRESENCE_CONFIG_FILE_PATH = '/.github/telepresence-config/config.yml'
-
+exports.TELEPRESENCE_CONFIG_FILE_PATH = '/.github/telepresence-config/config.yml';
 
 
 /***/ }),
@@ -61031,66 +61031,68 @@ const exec = __nccwpck_require__(6152);
 
 const TP_INSTALL_CACHE_ID = 'telepresence-install-id';
 
-const windowsInstall = async (version) => {
-    core.setFailed('Not implemented for use with Windows runners');
-    return false;
+const windowsInstall = async version => {
+  core.setFailed('Not implemented for use with Windows runners');
+  return false;
 };
 
-const unixInstall = async  (version) => {
-    const cacheKey = TP_INSTALL_CACHE_ID + `-${version}`;
-    const TELEPRESENCE_DOWNLOAD_URL = process.platform === 'darwin' ?
-        `https://app.getambassador.io/download/tel2/darwin/amd64/${version}/telepresence` :
-        `https://app.getambassador.io/download/tel2/linux/amd64/${version}/telepresence`;
+const unixInstall = async version => {
+  const cacheKey = TP_INSTALL_CACHE_ID + `-${version}`;
+  const TELEPRESENCE_DOWNLOAD_URL =
+    process.platform === 'darwin'
+      ? `https://app.getambassador.io/download/tel2/darwin/amd64/${version}/telepresence`
+      : `https://app.getambassador.io/download/tel2/linux/amd64/${version}/telepresence`;
 
-    let tpCacheId = await cache.restoreCache([this.TP_PATH], cacheKey);
+  let tpCacheId = await cache.restoreCache([this.TP_PATH], cacheKey);
 
-    if (!tpCacheId) {
-        try {
-            await toolCache.downloadTool(TELEPRESENCE_DOWNLOAD_URL, `${this.TP_PATH}/telepresence`);
-            tpCacheId = await cache.saveCache([this.TP_PATH], cacheKey);
-            if(!tpCacheId) {
-                core.setFailed('There was a problem saving the telepresence binary.');
-                return false;
-            }
-        } catch (e) {
-            core.setFailed(`There was a problem getting the telepresence binary: ${e}`);
-            return false;
-        }
+  if (!tpCacheId) {
+    try {
+      await toolCache.downloadTool(TELEPRESENCE_DOWNLOAD_URL, `${this.TP_PATH}/telepresence`);
+      tpCacheId = await cache.saveCache([this.TP_PATH], cacheKey);
+      if (!tpCacheId) {
+        core.setFailed('There was a problem saving the telepresence binary.');
+        return false;
+      }
+    } catch (e) {
+      core.setFailed(`There was a problem getting the telepresence binary: ${e}`);
+      return false;
     }
-    core.addPath(this.TP_PATH);
-    await exec.exec("chmod", ['a+x', `${this.TP_PATH}/telepresence`]);
-    return true;
+  }
+  core.addPath(this.TP_PATH);
+  await exec.exec('chmod', ['a+x', `${this.TP_PATH}/telepresence`]);
+  return true;
 };
 
 exports.telepresenceInstall = async () => {
-    const version = core.getInput('version');
-    let configFileSha = '00000';
-    try {
-        configFileSha = await configure.checksumConfigFile('sha1');
-    } catch (err) {
-        core.info('No telepresence configuration file found.');
-    }
-    const telepresenceCacheKey = `TELEPRESENCE-${version}-${configFileSha}`;
-    core.exportVariable('TELEPRESENCE_CACHE_KEY', telepresenceCacheKey);
+  const version = core.getInput('version');
+  let configFileSha = '00000';
+  try {
+    configFileSha = await configure.checksumConfigFile('sha1');
+  } catch (err) {
+    core.info('No telepresence configuration file found.');
+  }
+  const telepresenceCacheKey = `TELEPRESENCE-${version}-${configFileSha}`;
+  core.exportVariable('TELEPRESENCE_CACHE_KEY', telepresenceCacheKey);
 
-    try {
-        switch (process.platform) {
-            case "win32":
-                return await windowsInstall(version) && telepresenceCacheKey;
-            case "linux":
-            case "darwin":
-                return await unixInstall(version) && telepresenceCacheKey;
-            default:
-                core.setFailed("Invalid runner platform");
-                return undefined;
-        }
-    } catch (error) {
-        core.setFailed(error.message);
+  try {
+    switch (process.platform) {
+      case 'win32':
+        return (await windowsInstall(version)) && telepresenceCacheKey;
+      case 'linux':
+      case 'darwin':
+        return (await unixInstall(version)) && telepresenceCacheKey;
+      default:
+        core.setFailed('Invalid runner platform');
         return undefined;
     }
+  } catch (error) {
+    core.setFailed(error.message);
+    return undefined;
+  }
 };
 
 exports.TP_PATH = '/opt/telepresence/bin';
+
 
 /***/ }),
 
@@ -61327,43 +61329,41 @@ const installTelepresence = __nccwpck_require__(2900);
 const cache = __nccwpck_require__(1602);
 
 const telepresenceConfiguring = async function () {
-    const telepresenceCacheKey = await installTelepresence.telepresenceInstall();
-    if(!telepresenceCacheKey)
-        return;
+  const telepresenceCacheKey = await installTelepresence.telepresenceInstall();
+  if (!telepresenceCacheKey) return;
 
-    const path = configure.getTelepresenceConfigPath();
-    const telepresenceConfigDir = [path];
+  const path = configure.getTelepresenceConfigPath();
+  const telepresenceConfigDir = [path];
 
-    try {
-        await io.mkdirP(path);
-        await cache.restoreCache(telepresenceConfigDir, telepresenceCacheKey);
-    } catch (error) {
-        core.warning(`Unable to find the telepresence id: ${error}`);
-    }
-    // Create telepresence configuration file if provided
-    try {
-        await configure.createClientConfigFile();
-    } catch(err) {
-        core.setFailed(err);
-        return;
-    }
-    try {
-        await exec.exec('telepresence', ['connect']);
-    } catch (error) {
-        core.setFailed(error.message);
-        return;
-    }
-    try {
-        const cacheKey = await cache.saveCache(telepresenceConfigDir, telepresenceCacheKey);
-        if (!cacheKey)
-            core.setFailed('Unable to save the telepresence key cache');
-    } catch (error) {
-        core.setFailed(error.message);
-    }
-}
-
+  try {
+    await io.mkdirP(path);
+    await cache.restoreCache(telepresenceConfigDir, telepresenceCacheKey);
+  } catch (error) {
+    core.warning(`Unable to find the telepresence id: ${error}`);
+  }
+  // Create telepresence configuration file if provided
+  try {
+    await configure.createClientConfigFile();
+  } catch (err) {
+    core.setFailed(err);
+    return;
+  }
+  try {
+    await exec.exec('telepresence', ['connect']);
+  } catch (error) {
+    core.setFailed(error.message);
+    return;
+  }
+  try {
+    const cacheKey = await cache.saveCache(telepresenceConfigDir, telepresenceCacheKey);
+    if (!cacheKey) core.setFailed('Unable to save the telepresence key cache');
+  } catch (error) {
+    core.setFailed(error.message);
+  }
+};
 
 telepresenceConfiguring();
+
 })();
 
 module.exports = __webpack_exports__;
