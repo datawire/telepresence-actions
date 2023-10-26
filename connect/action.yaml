@@ -1,6 +1,11 @@
-name: 'Telepresence Connect'
-description: 'Telepresence connects to a remote cluster'
+name: "Telepresence Connect"
+description: "Telepresence connects to a remote cluster"
+inputs:
+  namespace:
+    description: The namespace to connect to
+    required: false
+    default: "default"
 runs:
-  using: 'node16'
-  main: 'dist/connect/index.js'
-  post: 'dist/disconnect/index.js'
+  using: "node16"
+  main: "dist/connect/index.js"
+  post: "dist/disconnect/index.js"

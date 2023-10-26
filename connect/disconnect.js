@@ -11,7 +11,7 @@ const telepresenceDisconnect = async function () {
 
   try {
     MetritonClient.sendMetricsReport('disconnect');
-    await exec.exec('telepresence', ['quit', '-ur']);
+    await exec.exec('telepresence', ['quit', '-s']);
   } catch (error) {
     core.setFailed(error.message);
   }

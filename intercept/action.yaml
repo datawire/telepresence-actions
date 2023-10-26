@@ -1,5 +1,5 @@
-name: 'Telepresence Intercept'
-description: 'Intercept a service'
+name: "Telepresence Intercept"
+description: "Intercept a service"
 inputs:
   service_name:
     description: The name of the service to intercept
@@ -25,7 +25,7 @@ inputs:
   ingress_port:
     description: This value will be used as the ingress port
     required: false
-    default: '80'
+    default: "80"
   ingress_tls:
     description: This flag will determine if TLS is used, and will default to false.
     required: false
@@ -38,6 +38,6 @@ inputs:
     required: false
     default: false
 runs:
-  using: 'node16'
-  main: 'dist/intercept/index.js'
-  post: 'dist/leave/index.js'
+  using: "node16"
+  main: "dist/intercept/index.js"
+  post: "dist/leave/index.js"

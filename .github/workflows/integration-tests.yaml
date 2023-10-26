@@ -1,0 +1,28 @@
+on:
+  pull_request:
+    #types:
+    #  - labeled
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+    #if: ${{ github.event.label.name == 'TODO' }}
+    steps:
+      - name: Remove label
+        uses: andymckay/labeler@master
+        with:
+          remove-labels: "TODO"
+      - uses: azure/setup-kubectl@v3
+        with:
+          version: "v1.25.3"
+        id: kubectl
+      - name: Provision Kubeception cluster
+        uses: datawire/infra-actions/provision-cluster@v0.2.0
+        with:
+          distribution: Kubeception
+          version: 1.26
+          kubeconfig: ${{ env.KUBECONFIG }}
+          kubeceptionToken: ${{ secrets.ST_KUBECEPTION_ACCESS_TOKEN }}
+          gkeCredentials: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+      - uses: actions/checkout@v3
+      - name: Run Tests
+        uses: ./.github/actions/tests

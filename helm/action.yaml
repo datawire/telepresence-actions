@@ -1,0 +1,6 @@
+name: "Telepresence Helm"
+description: "Telepresence installs the traffic manager"
+runs:
+  using: "node16"
+  main: "dist/install/index.js"
+  post: "dist/uninstall/index.js"

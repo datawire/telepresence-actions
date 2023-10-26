@@ -1,6 +1,56 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 911:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+const HttpClient = (__nccwpck_require__(82).HttpClient);
+class AmbassadorClient {
+  constructor(apiKey) {
+    if (!apiKey) {
+      throw new Error('telepresence api key is required');
+    }
+    this.apiKey = apiKey;
+    this.baseURL = 'https://app.getambassador.io/cloud/api';
+    this.httpClient = new HttpClient('ambassador', null, {
+      allowRedirects: false,
+      headers: { 'X-Ambassador-API-Key': this.apiKey },
+    });
+  }
+
+  async isApiKeyValid() {
+    const response = await this.doRequest('/userinfo');
+    if (response.message.statusCode !== 200) {
+      return false;
+    }
+    return true;
+  }
+
+  async getUserInfo() {
+    const response = await this.doRequestJson('/userinfo', null, 'GET');
+    if (response.statusCode !== 200) {
+      throw new Error('Could not get user information');
+    }
+    return response.result;
+  }
+
+  async doRequest(endpoint, data, method, additionalHeaders) {
+    return this.httpClient.request(method || 'GET', this.baseURL + endpoint, data, additionalHeaders || {});
+  }
+
+  async doRequestJson(endpoint, data, method = 'GET', additionalHeaders) {
+    if (method === 'GET') {
+      return this.httpClient.getJson(this.baseURL + endpoint, additionalHeaders || {});
+    }
+    return this.httpClient[`${method.toLowerCase()}Json`](this.baseURL + endpoint, data, additionalHeaders || {});
+  }
+}
+
+module.exports = AmbassadorClient;
+
+
+/***/ }),
+
 /***/ 144:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -96,78 +146,46 @@ exports.TELEPRESENCE_CONFIG_FILE_PATH = '/.github/telepresence-config/config.yml
 
 /***/ }),
 
-/***/ 11:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+/***/ 820:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
+const fs = __nccwpck_require__(147);
+const HttpClient = (__nccwpck_require__(82).HttpClient);
+const AmbassadorClient = __nccwpck_require__(911);
 const core = __nccwpck_require__(806);
-const toolCache = __nccwpck_require__(347);
-const cache = __nccwpck_require__(772);
 const configure = __nccwpck_require__(144);
-const exec = __nccwpck_require__(73);
 
-const TP_INSTALL_CACHE_ID = 'telepresence-install-id';
+const httpClient = new HttpClient();
+const ambassadorClient = new AmbassadorClient(process.env.TELEPRESENCE_API_KEY);
 
-const windowsInstall = async version => {
-  core.setFailed('Not implemented for use with Windows runners');
-  return false;
-};
-
-const unixInstall = async version => {
-  const cacheKey = TP_INSTALL_CACHE_ID + `-${version}`;
-  const TELEPRESENCE_DOWNLOAD_URL =
-    process.platform === 'darwin'
-      ? `https://app.getambassador.io/download/tel2/darwin/amd64/${version}/telepresence`
-      : `https://app.getambassador.io/download/tel2/linux/amd64/${version}/telepresence`;
-
-  let tpCacheId = await cache.restoreCache([this.TP_PATH], cacheKey);
-
-  if (!tpCacheId) {
+class MetritonClient {
+  static async sendMetricsReport(action) {
     try {
-      await toolCache.downloadTool(TELEPRESENCE_DOWNLOAD_URL, `${this.TP_PATH}/telepresence`);
-      tpCacheId = await cache.saveCache([this.TP_PATH], cacheKey);
-      if (!tpCacheId) {
-        core.setFailed('There was a problem saving the telepresence binary.');
-        return false;
-      }
-    } catch (e) {
-      core.setFailed(`There was a problem getting the telepresence binary: ${e}`);
-      return false;
+      const reportDestination = 'https://metriton.datawire.io/scout';
+      const applicationName = 'telepresence-github-action-integration';
+      const installId = fs.readFileSync(`${configure.getTelepresenceConfigPath()}/id`).toString();
+      const extensionVersion = process.env.ACTION_VERSION;
+      const pipelineId = `${process.env.GITHUB_RUN_ID}-${process.env.GITHUB_RUN_ATTEMPT}`;
+      const { id: user_id, accountId: account_id } = ambassadorClient.getUserInfo();
+      const payload = {
+        application: applicationName,
+        install_id: installId,
+        version: extensionVersion,
+        metadata: {
+          action,
+          pipelineId,
+          user_id,
+          account_id,
+        },
+      };
+      httpClient.postJson(reportDestination, payload);
+    } catch (err) {
+      core.error('Error sending report to Metriton: ' + err.message);
     }
   }
-  core.addPath(this.TP_PATH);
-  await exec.exec('chmod', ['a+x', `${this.TP_PATH}/telepresence`]);
-  return true;
-};
+}
 
-exports.telepresenceInstall = async () => {
-  const version = core.getInput('version');
-  let configFileSha = '00000';
-  try {
-    configFileSha = await configure.checksumConfigFile('sha1');
-  } catch (err) {
-    core.info('No telepresence configuration file found.');
-  }
-  const telepresenceCacheKey = `TELEPRESENCE-${version}-${configFileSha}`;
-  core.exportVariable('TELEPRESENCE_CACHE_KEY', telepresenceCacheKey);
-
-  try {
-    switch (process.platform) {
-      case 'win32':
-        return (await windowsInstall(version)) && telepresenceCacheKey;
-      case 'linux':
-      case 'darwin':
-        return (await unixInstall(version)) && telepresenceCacheKey;
-      default:
-        core.setFailed('Invalid runner platform');
-        return undefined;
-    }
-  } catch (error) {
-    core.setFailed(error.message);
-    return undefined;
-  }
-};
-
-exports.TP_PATH = '/opt/telepresence/bin';
+module.exports = MetritonClient;
 
 
 /***/ }),
@@ -196,18 +214,18 @@ module.exports = eval("require")("@actions/exec");
 
 /***/ }),
 
-/***/ 446:
+/***/ 82:
 /***/ ((module) => {
 
-module.exports = eval("require")("@actions/io");
+module.exports = eval("require")("@actions/http-client");
 
 
 /***/ }),
 
-/***/ 347:
+/***/ 446:
 /***/ ((module) => {
 
-module.exports = eval("require")("@actions/tool-cache");
+module.exports = eval("require")("@actions/io");
 
 
 /***/ }),
@@ -269,9 +287,26 @@ module.exports = require("fs");
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-const install = __nccwpck_require__(11);
+const core = __nccwpck_require__(806);
+const exec = __nccwpck_require__(73);
+const MetritonClient = __nccwpck_require__(820);
 
-install.telepresenceInstall();
+const telepresenceHelmUninstall = async function () {
+    const connected = core.getState('telepresence_helm_install');
+    if (!connected) {
+        core.notice('Skipping uninstall. Telepresence was unable to be installed.');
+        return;
+    }
+
+    try {
+        MetritonClient.sendMetricsReport('helm_uninstall');
+        await exec.exec('telepresence', ['helm', 'uninstall']);
+    } catch (error) {
+        core.setFailed(error.message);
+    }
+};
+
+telepresenceHelmUninstall();
 
 })();
 
