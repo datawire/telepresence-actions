@@ -13,6 +13,17 @@ jobs:
       #  uses: andymckay/labeler@master
       #  with:
       #    remove-labels: "TODO"
+
+      # install and login
+      - uses: actions/checkout@v3
+      - name: Install Telepresence
+        uses: ./install
+      - name: Login
+        uses: ./login
+        with:
+          telepresence_api_key: ${{ secrets.TELEPRESENCE_API_KEY }}
+
+      # we need a demo cluster
       - uses: azure/setup-kubectl@v3
         with:
           version: "v1.25.3"
@@ -29,10 +40,8 @@ jobs:
         shell: bash
         run: |
           kubectl apply -f https://raw.githubusercontent.com/datawire/edgey-corp-nodejs/main/k8s-config/edgey-corp-web-app-no-mapping.yaml
-      # test tele actions
-      - uses: actions/checkout@v3
-      - name: Install Telepresence
-        uses: ./install
+
+      # continue tests
       - name: Install Traffic manager"
         uses: ./helm
       - name: Telepresence connect
@@ -46,10 +55,6 @@ jobs:
               echo "> Output wasn't supposed to be empty and it was"
               exit 1
           fi
-      - name: Login
-        uses: ./login
-        with:
-          telepresence_api_key: ${{ secrets.TELEPRESENCE_API_KEY }}
       - name: Intercept the service
         uses: ./intercept
         with:
