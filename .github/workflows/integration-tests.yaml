@@ -64,13 +64,13 @@ jobs:
         with:
           service_name: dataprocessingservice
           service_port: 3000:3000
-          http_header: "x-tele-actions-header=dataprocessingservice" # Custom HTTP header name and value that will identify traffic desired to go to the local service instace.
+          http_header: "x-telepresence-intercept-test=dataprocessingservice" # Custom HTTP header name and value that will identify traffic desired to go to the local service instace.
           print_logs: true # Flag to instruct the action to print out Telepresence logs and export an artifact with them
       - name: Test Intercept with Curl
         shell: bash
         run: |
           sleep 3
-          output=$(curl -H "x-tele-actions-header=dataprocessingservice" verylargejavaservice:8080 | grep 'blue')
+          output=$(curl -H "x-telepresence-intercept-test:dataprocessingservice" verylargejavaservice:8080 | grep 'blue')
           if [ -z "$output" ]; then
               echo "Failed in step: ${STEP}"
               echo "> Output wasn't supposed to be empty and it was"
