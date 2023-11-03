@@ -82942,14 +82942,14 @@ var __webpack_exports__ = {};
 (() => {
 const core = __nccwpck_require__(4425);
 const exec = __nccwpck_require__(5186);
-const configure = __nccwpck_require__(3144);
+//const configure = require('../src/configure');
 
 const AmbassadorClient = __nccwpck_require__(4911);
 const MetritonClient = __nccwpck_require__(5820);
 
 const telepresenceLogin = async function () {
-  const isConfigured = await configure.getConfiguration();
-  if (!isConfigured) return;
+  //  const isConfigured = await configure.getConfiguration();
+  //  if (!isConfigured) return;
   const apiKey = core.getInput('telepresence_api_key');
   if (!apiKey) {
     core.setFailed(`telepresence_api_key is required`);

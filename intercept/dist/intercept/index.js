@@ -88549,12 +88549,12 @@ var __webpack_exports__ = {};
 const artifact = __nccwpck_require__(4581);
 const core = __nccwpck_require__(4425);
 const exec = __nccwpck_require__(5186);
-const configure = __nccwpck_require__(3144);
+//const configure = require('../src/configure');
 const MetritonClient = __nccwpck_require__(5820);
 
 const telepresenceIntercept = async function () {
-  const isConfigured = await configure.getConfiguration();
-  if (!isConfigured) return;
+  //const isConfigured = await configure.getConfiguration();
+  //if (!isConfigured) return;
   try {
     MetritonClient.sendMetricsReport('intercept');
     const service_name = core.getInput('service_name');
