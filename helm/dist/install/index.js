@@ -82942,19 +82942,19 @@ var __webpack_exports__ = {};
 (() => {
 const core = __nccwpck_require__(4425);
 const exec = __nccwpck_require__(5186);
-const configure = __nccwpck_require__(3144);
+//const configure = require('../src/configure');
 const MetritonClient = __nccwpck_require__(5820);
 
 const telepresenceHelmInstall = async function () {
-    const isConfigured = await configure.getConfiguration();
-    if (!isConfigured) return;
-    try {
-        MetritonClient.sendMetricsReport('helm_install');
-        await exec.exec('telepresence', ['helm', "install"]);
-        core.saveState('telepresence_helm_installed', true);
-    } catch (error) {
-        core.setFailed(error.message);
-    }
+  //const isConfigured = await configure.getConfiguration();
+  //if (!isConfigured) return;
+  try {
+    MetritonClient.sendMetricsReport('helm_install');
+    await exec.exec('telepresence', ['helm', 'install']);
+    core.saveState('telepresence_helm_installed', true);
+  } catch (error) {
+    core.setFailed(error.message);
+  }
 };
 
 telepresenceHelmInstall();
