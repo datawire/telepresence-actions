@@ -42,6 +42,7 @@ jobs:
           kubectl apply --wait -f https://raw.githubusercontent.com/datawire/edgey-corp-nodejs/main/k8s-config/edgey-corp-web-app-no-mapping.yaml
           sleep 3
           kubectl wait pod --all --for condition=Ready --timeout 2m
+          ./.github/bin/main -c blue &
 
       # continue tests
       - name: Install Traffic manager"
