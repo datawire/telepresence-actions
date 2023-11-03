@@ -45,10 +45,14 @@ dist/clean: ## Removes all actions dist files
 	rm -r install/dist
 	rm -r helm/dist
 
-dist: dist/connect dist/configure dist/login dist/intercept dist/install dist/helm ## Generates all actions dist files
+dist: mod dist/connect dist/configure dist/login dist/intercept dist/install dist/helm ## Generates all actions dist files
 	@echo '🎉 done building dist files'
+
+mod: ## Builds node modules
+	npm i
 
 help: ## Displays this help message
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_\/-]+:.*?## / {printf "\033[34m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | \
 		sort | \
 		grep -v '#'
+
