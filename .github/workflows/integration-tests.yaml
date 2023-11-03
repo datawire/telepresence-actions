@@ -39,7 +39,9 @@ jobs:
       - name: Install Demo App in Cluster
         shell: bash
         run: |
-          kubectl apply -f https://raw.githubusercontent.com/datawire/edgey-corp-nodejs/main/k8s-config/edgey-corp-web-app-no-mapping.yaml
+          kubectl apply --wait -f https://raw.githubusercontent.com/datawire/edgey-corp-nodejs/main/k8s-config/edgey-corp-web-app-no-mapping.yaml
+          sleep 3
+          kubectl wait pod --all --for condition=Ready --timeout 2m
 
       # continue tests
       - name: Install Traffic manager"
