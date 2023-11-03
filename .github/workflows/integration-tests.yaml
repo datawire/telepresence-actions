@@ -49,7 +49,8 @@ jobs:
       - name: Test Connection with Curl
         shell: bash
         run: |
-          output=$(curl -H "x-tele-actions-header=dataprocessingservice" verylargejavaservice | grep 'green')
+          sleep 3
+          output=$(curl verylargejavaservice:8080 | grep 'green')
           if [ -z "$output" ]; then
               echo "Failed in step: ${STEP}"
               echo "> Output wasn't supposed to be empty and it was"
@@ -65,7 +66,8 @@ jobs:
       - name: Test Intercept with Curl
         shell: bash
         run: |
-          output=$(curl -H "x-tele-actions-header=dataprocessingservice" verylargejavaservice | grep 'blue')
+          sleep 3
+          output=$(curl -H "x-tele-actions-header=dataprocessingservice" verylargejavaservice:8080 | grep 'blue')
           if [ -z "$output" ]; then
               echo "Failed in step: ${STEP}"
               echo "> Output wasn't supposed to be empty and it was"
