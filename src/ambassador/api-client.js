@@ -1,8 +1,8 @@
 const HttpClient = require('@actions/http-client').HttpClient;
 class AmbassadorClient {
   constructor(apiKey) {
-    if (!apiKey) {
-      throw new Error('telepresence api key is required');
+    if (apiKey === '') {
+      throw new Error(`telepresence api key is required`);
     }
     this.apiKey = apiKey;
     this.baseURL = 'https://app.getambassador.io/cloud/api';

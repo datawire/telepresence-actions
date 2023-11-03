@@ -10,7 +10,7 @@ const telepresenceLogin = async function () {
   if (!isConfigured) return;
   const apiKey = core.getInput('telepresence_api_key');
   if (!apiKey) {
-    core.setFailed('telepresence_api_key is required');
+    core.setFailed(`telepresence_api_key is required`);
     return;
   }
 

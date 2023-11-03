@@ -82444,8 +82444,8 @@ module.exports.implForWrapper = function (wrapper) {
 const HttpClient = (__nccwpck_require__(214).HttpClient);
 class AmbassadorClient {
   constructor(apiKey) {
-    if (!apiKey) {
-      throw new Error('telepresence api key is required');
+    if (apiKey === '') {
+      throw new Error(`telepresence api key is required`);
     }
     this.apiKey = apiKey;
     this.baseURL = 'https://app.getambassador.io/cloud/api';
@@ -82952,7 +82952,7 @@ const telepresenceLogin = async function () {
   if (!isConfigured) return;
   const apiKey = core.getInput('telepresence_api_key');
   if (!apiKey) {
-    core.setFailed('telepresence_api_key is required');
+    core.setFailed(`telepresence_api_key is required`);
     return;
   }
 
