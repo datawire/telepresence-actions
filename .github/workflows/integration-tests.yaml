@@ -36,7 +36,7 @@ jobs:
           kubeconfig: ${{ env.KUBECONFIG }}
           kubeceptionToken: ${{ secrets.ST_KUBECEPTION_ACCESS_TOKEN }}
           gkeCredentials: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-      - name: Install Demo App in Cluster
+      - name: Start Demo App in Cluster and Local
         shell: bash
         run: |
           kubectl apply --wait -f https://raw.githubusercontent.com/datawire/edgey-corp-nodejs/main/k8s-config/edgey-corp-web-app-no-mapping.yaml
@@ -55,7 +55,6 @@ jobs:
           sleep 3
           output=$(curl verylargejavaservice:8080 | grep 'green')
           if [ -z "$output" ]; then
-              echo "Failed in step: ${STEP}"
               echo "> Output wasn't supposed to be empty and it was"
               exit 1
           fi
@@ -72,7 +71,6 @@ jobs:
           sleep 3
           output=$(curl -H "x-telepresence-intercept-test:dataprocessingservice" verylargejavaservice:8080 | grep 'blue')
           if [ -z "$output" ]; then
-              echo "Failed in step: ${STEP}"
               echo "> Output wasn't supposed to be empty and it was"
               exit 1
           fi
