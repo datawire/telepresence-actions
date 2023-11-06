@@ -11,7 +11,6 @@ const telepresenceIntercept = async function () {
     //MetritonClient.sendMetricsReport('intercept');
     const service_name = core.getInput('service_name');
     const service_port = core.getInput('service_port');
-    const namespace = core.getInput('namespace');
     const http_header = core.getInput('http_header');
     const env_file = core.getInput('env_file');
     const ingress_host = core.getInput('ingress_host');
@@ -30,8 +29,6 @@ const telepresenceIntercept = async function () {
       ingress_port,
       '--ingress-l5',
       ingress_l5,
-      '-n',
-      namespace,
       `--http-header=${http_header}`,
     ];
     if (env_file && env_file.length !== 0) {
