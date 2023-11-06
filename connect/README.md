@@ -4,6 +4,12 @@ The telepresence connect action allows users to perform a `telepresence connect`
 
 It's a good practice for users to store their KUBECONFIG yaml files as a Github Actions secret so that the contents are encrypted and masked out in the workflow's logs.
 
+## Inputs
+
+| name | required | default value | description
+| ----- | -------- | ----- | ------ |
+| namespace |  no  | default | The namespace to connect to |
+
 ## Post action
 
 The telepresence connect action includes a post action script that ends the connection when the job finishes.
@@ -38,6 +44,7 @@ jobs:
       # Connect to a remote Kubernetes cluster
       - name: Connect to remote cluster
         uses: datawire/telepresence-actions/connect@v1.0
-
+        with:
+          namespace: emojivoto
       # Other steps ...
 ```
