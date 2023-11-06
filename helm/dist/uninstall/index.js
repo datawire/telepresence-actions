@@ -1,7 +1,7 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 8616:
+/***/ 9076:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
@@ -9,26 +9,7 @@ __nccwpck_require__.r(__webpack_exports__);
 /* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
 /* harmony export */   "stateKey": () => (/* binding */ stateKey)
 /* harmony export */ });
-const core = __nccwpck_require__(4425);
-const exec = __nccwpck_require__(5186);
-//const configure = require('../src/configure');
-//const MetritonClient = require('../src/metrics');
-
 const stateKey = 'telepresence_helm_installed';
-
-const telepresenceHelmInstall = async function () {
-  //const isConfigured = await configure.getConfiguration();
-  //if (!isConfigured) return;
-  try {
-    //MetritonClient.sendMetricsReport('helm_install');
-    await exec.exec('telepresence', ['helm', 'install']);
-    core.saveState(stateKey, true);
-  } catch (error) {
-    core.setFailed(error.message);
-  }
-};
-
-telepresenceHelmInstall();
 
 
 /***/ }),
@@ -27209,8 +27190,8 @@ var __webpack_exports__ = {};
 (() => {
 const core = __nccwpck_require__(4425);
 const exec = __nccwpck_require__(5186);
+const { stateKey } = __nccwpck_require__(9076);
 //const MetritonClient = require('../src/metrics');
-const { stateKey } = __nccwpck_require__(8616);
 
 const telepresenceHelmUninstall = async function () {
   const connected = core.getState(stateKey);

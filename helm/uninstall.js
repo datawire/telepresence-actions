@@ -1,7 +1,7 @@
 const core = require('@actions/core');
 const exec = require('@actions/exec');
+const { stateKey } = require('./models');
 //const MetritonClient = require('../src/metrics');
-const { stateKey } = require('./install');
 
 const telepresenceHelmUninstall = async function () {
   const connected = core.getState(stateKey);

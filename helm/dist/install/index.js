@@ -1,6 +1,19 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 9076:
+/***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
+
+"use strict";
+__nccwpck_require__.r(__webpack_exports__);
+/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
+/* harmony export */   "stateKey": () => (/* binding */ stateKey)
+/* harmony export */ });
+const stateKey = 'telepresence_helm_installed';
+
+
+/***/ }),
+
 /***/ 4845:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -27173,19 +27186,13 @@ module.exports = require("zlib");
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-"use strict";
-__nccwpck_require__.r(__webpack_exports__);
-/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
-/* harmony export */   "stateKey": () => (/* binding */ stateKey)
-/* harmony export */ });
 const core = __nccwpck_require__(4425);
 const exec = __nccwpck_require__(5186);
+const { stateKey } = __nccwpck_require__(9076);
 //const configure = require('../src/configure');
 //const MetritonClient = require('../src/metrics');
-
-const stateKey = 'telepresence_helm_installed';
 
 const telepresenceHelmInstall = async function () {
   //const isConfigured = await configure.getConfiguration();
