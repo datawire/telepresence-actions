@@ -30,6 +30,12 @@ dist/install: ## Generates the dist files for the install action
 	cd install; ncc build pre-install.js -o dist/preinstall
 	@echo '✅ Built install'
 
+dist/helm: ## Generates the dist files for the helm action
+	@echo '🔨Building helm'
+	cd helm; ncc build install.js -o dist/install
+	cd helm; ncc build uninstall.js -o dist/uninstall
+	@echo '✅ Built helm'
+
 
 dist/clean: ## Removes all actions dist files
 	rm -r connect/dist
@@ -37,11 +43,16 @@ dist/clean: ## Removes all actions dist files
 	rm -r login/dist
 	rm -r intercept/dist
 	rm -r install/dist
+	rm -r helm/dist
 
-dist: dist/connect dist/configure dist/login dist/intercept dist/install ## Generates all actions dist files
+dist: mod dist/connect dist/configure dist/login dist/intercept dist/install dist/helm ## Generates all actions dist files
 	@echo '🎉 done building dist files'
+
+mod: ## Builds node modules
+	npm i
 
 help: ## Displays this help message
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_\/-]+:.*?## / {printf "\033[34m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | \
 		sort | \
 		grep -v '#'
+

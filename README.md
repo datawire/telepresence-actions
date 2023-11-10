@@ -6,8 +6,8 @@ Telepresence combined with GitHub Actions allows you to run integration tests in
 
 The v1.0.0 of Telepresence GitHub Actions contains individual actions to:
 
-1. [Configure](./configure) Telepresence in a new repository.
 1. [Install](./install) the Telepresence binary in the Github runner.
+1. [Helm](./helm) install the telepresence traffic manager in the cluster.
 1. [Connect](./connect) to a remote Kubernetes cluster.
 1. [Log into Ambassador](./login) and create a [personal intercept](https://www.getambassador.io/docs/telepresence/latest/concepts/intercepts/#personal-intercept).
 1. [Intercept](./intercept) traffic of service running in the K8s cluster and redirect it a service instance running in CI.
@@ -62,22 +62,23 @@ The following is an example of a workflow that:
           ${{ env.KUBECONFIG_FILE }}
           EOF
       - name: Install Telepresence
-        uses: datawire/telepresence-actions/install@v0.3
+        uses: datawire/telepresence-actions/install@v1.1
         with:
           version: 2.5.8 # Change the version number here according to the version of Telepresence in your cluster or omit this parameter to install the latest version
+      - name: Install Traffic Manager
+        uses: datawire/telepresence-actions/helm@v1.1
       - name: Telepresence connect
-        uses: datawire/telepresence-actions/connect@v0.3
+        uses: datawire/telepresence-actions/connect@v1.1
       - name: Login
-        uses: datawire/telepresence-actions/login@v0.3
+        uses: datawire/telepresence-actions/login@v1.1
         with:
           telepresence_api_key: ${{ secrets.TELEPRESENCE_API_KEY }}
       - name: Intercept the service
-        uses: datawire/telepresence-actions/intercept@v0.3
+        uses: datawire/telepresence-actions/intercept@v1.1
         with:
           service_name: service-name
           service_port: 8081:8080
-          namespace: namespacename-of-your-service
-          http_header: "x-telepresence-intercept-id=service-intercepted" # Custom HTTP header name and value that will identify traffic desired to go to the local service instace.
+          http_header: "x-telepresence-intercept-test=service-intercepted" # Custom HTTP header name and value that will identify traffic desired to go to the local service instace.
           print_logs: true # Flag to instruct the action to print out Telepresence logs and export an artifact with them
       #---- Run a custom command to run integration tests.
       #- name: Run integrations test

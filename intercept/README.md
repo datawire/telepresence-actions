@@ -7,7 +7,6 @@ Telepresence intercept allows you to intercept only some of the traffic to a ser
 
 | name | required | default value | description
 | ----- | -------- | ----- | ------ |
-| namespace |  no | default | The namespace of the service to intercept |
 | service_name |  ☑️  | | The name of the service to intercept |
 | service_port |  ☑️  | | The port to intercept |
 | http_header |  no | x-telepresence-intercept-id=service-intercepted | Only intercept traffic that matches this "HTTP2_HEADER=REGEXP" specifier |
@@ -31,6 +30,5 @@ The telepresence intercept action includes a post action script that internally 
   with:
     service_name: voting
     service_port: 8080
-    namespace: emojivoto
-    http_header: "x-telepresence-intercept-id=service-intercepted"
+    http_header: "x-telepresence-intercept-test=service-intercepted"
 ```

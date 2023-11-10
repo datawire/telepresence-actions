@@ -1,0 +1,76 @@
+on:
+  pull_request:
+    #types:
+    #  - labeled
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+    #if: ${{ github.event.label.name == 'TODO' }}
+    env:
+      KUBECONFIG: ${{ github.workspace }}/kubeconfig.yaml
+    steps:
+      #- name: Remove label
+      #  uses: andymckay/labeler@master
+      #  with:
+      #    remove-labels: "TODO"
+
+      # install and login
+      - uses: actions/checkout@v3
+      - name: Install Telepresence
+        uses: ./install
+      - name: Login
+        uses: ./login
+        with:
+          telepresence_api_key: ${{ secrets.TELEPRESENCE_API_KEY }}
+
+      # we need a demo cluster
+      - uses: azure/setup-kubectl@v3
+        with:
+          version: "v1.25.3"
+        id: kubectl
+      - name: Provision Kubeception cluster
+        uses: datawire/infra-actions/provision-cluster@v0.2.0
+        with:
+          distribution: Kubeception
+          version: 1.26
+          kubeconfig: ${{ env.KUBECONFIG }}
+          kubeceptionToken: ${{ secrets.ST_KUBECEPTION_ACCESS_TOKEN }}
+          gkeCredentials: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+      - name: Start Demo App in Cluster and Local
+        shell: bash
+        run: |
+          kubectl apply --wait -f https://raw.githubusercontent.com/datawire/edgey-corp-nodejs/main/k8s-config/edgey-corp-web-app-no-mapping.yaml
+          kubectl rollout status -f https://raw.githubusercontent.com/datawire/edgey-corp-nodejs/main/k8s-config/edgey-corp-web-app-no-mapping.yaml -w --timeout 2m || true
+          kubectl wait pod --all --for condition=Ready --timeout 2m
+          ./.github/bin/main -c blue &
+
+      # continue tests
+      - name: Install Traffic manager"
+        uses: ./helm
+      - name: Telepresence connect
+        uses: ./connect
+      - name: Test Connection with Curl
+        shell: bash
+        run: |
+          sleep 3
+          output=$(curl verylargejavaservice:8080 | grep 'green')
+          if [ -z "$output" ]; then
+              echo "> Output wasn't supposed to be empty and it was"
+              exit 1
+          fi
+      - name: Intercept the service
+        uses: ./intercept
+        with:
+          service_name: dataprocessingservice
+          service_port: 3000:3000
+          http_header: "x-telepresence-intercept-test=dataprocessingservice" # Custom HTTP header name and value that will identify traffic desired to go to the local service instace.
+          print_logs: true # Flag to instruct the action to print out Telepresence logs and export an artifact with them
+      - name: Test Intercept with Curl
+        shell: bash
+        run: |
+          sleep 3
+          output=$(curl -H "x-telepresence-intercept-test:dataprocessingservice" verylargejavaservice:8080 | grep 'blue')
+          if [ -z "$output" ]; then
+              echo "> Output wasn't supposed to be empty and it was"
+              exit 1
+          fi
