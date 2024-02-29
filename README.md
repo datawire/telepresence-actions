@@ -2,6 +2,15 @@
 
 Telepresence combined with GitHub Actions allows you to run integration tests in your CI pipeline without having to run any dependant service. By connecting to the target Kubernetes cluster, intercepting traffic to the remote service and sending it to an instance of the service running in CI you will be able to test bugfixes, updates and features very easily.
 
+## v1.1.0
+
+The v1.1.0 release contains the following changes
+
+1. Fix issues with Ambassador Cloud access needed during run.
+1. Move namespace option from `intercept` action to `connect` action (Telepresence 2.16)
+1. Remove the (undocumented) `configure` action.
+1. Add integration tests.
+
 ## v1.0.0
 
 The v1.0.0 of Telepresence GitHub Actions contains individual actions to:
@@ -64,7 +73,7 @@ The following is an example of a workflow that:
       - name: Install Telepresence
         uses: datawire/telepresence-actions/install@v1.1
         with:
-          version: 2.5.8 # Change the version number here according to the version of Telepresence in your cluster or omit this parameter to install the latest version
+          version: 2.19.0 # Change the version number here according to the version of Telepresence in your cluster or omit this parameter to install the latest version
       - name: Install Traffic Manager
         uses: datawire/telepresence-actions/helm@v1.1
       - name: Telepresence connect
