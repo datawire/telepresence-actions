@@ -29,13 +29,12 @@ jobs:
           version: "v1.25.3"
         id: kubectl
       - name: Provision Kubeception cluster
-        uses: datawire/infra-actions/provision-cluster@v0.2.0
+        uses: datawire/infra-actions/provision-cluster@v0.2.8
         with:
           distribution: Kubeception
           version: 1.26
           kubeconfig: ${{ env.KUBECONFIG }}
           kubeceptionToken: ${{ secrets.ST_KUBECEPTION_ACCESS_TOKEN }}
-          gkeCredentials: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
       - name: Start Demo App in Cluster and Local
         shell: bash
         run: |
